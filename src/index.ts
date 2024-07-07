@@ -1,5 +1,6 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import cors from "cors";
 import LoginRoute from "./routes/login";
 import RegisterRoute from "./routes/register";
 import UsersRoute from "./routes/users";
@@ -9,6 +10,7 @@ const PORT = 3023;
 
 export const prisma = new PrismaClient();
 const app = express();
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
