@@ -1,7 +1,9 @@
 import express from "express";
+import { PrismaClient } from "@prisma/client";
 import LoginRoute from "./routes/login";
 import RegisterRoute from "./routes/register";
-import { PrismaClient } from "@prisma/client";
+import UsersRoute from "./routes/users";
+import ExpireRoute from "./routes/expire";
 
 const PORT = 3023;
 
@@ -13,6 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 LoginRoute(app);
 RegisterRoute(app);
+UsersRoute(app);
+ExpireRoute(app);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
