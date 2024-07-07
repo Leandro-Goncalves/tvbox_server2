@@ -1,0 +1,21 @@
+{
+  "name": "tvbox_server2",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "Leandro Gonçalves",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
+  },
+  "scripts": {
+    "start": "node .",
+    "start:dev": "nodemon",
+    "build": "npx tsc"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21"
+  }
+}
