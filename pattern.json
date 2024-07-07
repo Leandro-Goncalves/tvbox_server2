@@ -1,0 +1,14 @@
+[
+  {
+    "dataInputs": [
+      {
+        "title": "Name",
+        "key": "name"
+      }
+    ],
+    "title": "route",
+    "type": "file",
+    "fileName": "{{name}}.ts",
+    "content": "import type { Express } from \"express\";\r\n\r\nconst {{name}}Route = (app: Express) => {\r\n  app.get(\"/\", async (req, res) => {\r\n\r\n  });\r\n};\r\n\r\nexport default {{name}}Route;\r\n"
+  }
+]
