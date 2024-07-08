@@ -1,15 +1,21 @@
 import express from "express";
+import http from "http";
+import { Server } from "socket.io";
 import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 import LoginRoute from "./routes/login";
 import RegisterRoute from "./routes/register";
 import UsersRoute from "./routes/users";
 import ExpireRoute from "./routes/expire";
+import { startSocket } from "./socket";
 
 const PORT = 3023;
 
 export const prisma = new PrismaClient();
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+startSocket(io);
 app.use(cors());
 
 app.use(express.json());
@@ -24,6 +30,6 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
