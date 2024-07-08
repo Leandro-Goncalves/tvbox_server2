@@ -24,6 +24,6 @@ model userApp {
   guid     String   @id @default(uuid())
   name     String
   startAt  DateTime
-  user     user     @relation(fields: [userGuid], references: [guid])
+  user     user     @relation(fields: [userGuid], references: [guid], onDelete: Cascade)
   userGuid String   @unique
 }

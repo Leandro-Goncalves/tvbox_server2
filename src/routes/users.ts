@@ -26,6 +26,12 @@ const UsersRoute = (io: Io, app: Express) => {
   app.delete("/user/:guid", async (req, res) => {
     const guid = req.params.guid;
 
+    await prisma.userApp.deleteMany({
+      where: {
+        userGuid: guid,
+      },
+    });
+
     await prisma.user.delete({
       where: {
         guid: guid,
