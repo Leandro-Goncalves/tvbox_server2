@@ -8,6 +8,7 @@ import RegisterRoute from "./routes/register";
 import UsersRoute from "./routes/users";
 import ExpireRoute from "./routes/expire";
 import { startSocket } from "./socket";
+import RebootRoute from "./routes/reboot";
 
 const PORT = 3023;
 
@@ -23,8 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 
 LoginRoute(app);
 RegisterRoute(app);
-UsersRoute(app);
+UsersRoute(io, app);
 ExpireRoute(app);
+RebootRoute(io, app);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
