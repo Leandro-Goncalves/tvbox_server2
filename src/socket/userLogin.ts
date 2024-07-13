@@ -19,6 +19,11 @@ export const UserLogin = async (socket: ISocket, guid: string) => {
   socket.join(guid);
   socket.data.guid = guid;
 
+  if (user.isBlocked) {
+    socket.emit("expired");
+    return;
+  }
+
   if (user.expirationDate < new Date()) {
     socket.emit("expired");
     return;
