@@ -22,6 +22,37 @@ const UsersRoute = (app: Express) => {
     res.json(users.map((user) => ({ ...user, userApp: user.userApp[0] })));
   });
 
+  app.post("/user:guid/app", async (req, res) => {
+    const guid = req.params.guid;
+    const { name } = req.body;
+
+    if (!name) {
+      await prisma.userApp.deleteMany({
+        where: {
+          userGuid: guid,
+        },
+      });
+      res.json({});
+    }
+
+    await prisma.userApp.upsert({
+      where: {
+        userGuid: guid,
+      },
+      create: {
+        name,
+        startAt: new Date(),
+        userGuid: guid,
+      },
+      update: {
+        name,
+        startAt: new Date(),
+        userGuid: guid,
+      },
+    });
+    res.json({});
+  });
+
   app.delete("/user/:guid", async (req, res) => {
     const guid = req.params.guid;
 
