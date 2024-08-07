@@ -22,7 +22,7 @@ export const startSocket = (io: Io) => {
     console.log("a user connected");
 
     socket.on("user", async (guid) => {
-      await UserLogin(socket, guid);
+      // await UserLogin(socket, guid);
       socket.on("removeApp", async function () {
         console.log("user remove app");
         await prisma.userApp.deleteMany({
@@ -59,14 +59,6 @@ export const startSocket = (io: Io) => {
         console.log("user not found");
         return;
       }
-      await prisma.user.updateMany({
-        where: {
-          guid: socket.data.guid,
-        },
-        data: {
-          isLogged: false,
-        },
-      });
 
       await prisma.userApp.deleteMany({
         where: {

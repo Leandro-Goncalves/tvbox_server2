@@ -4,44 +4,59 @@ import dayjs from "dayjs";
 
 const DAYS_TO_WARNING = 7;
 
-export const UserLogin = async (socket: ISocket, guid: string) => {
-  console.log("try to connect =>", guid);
+export const UserLogin = async (guid: string) => {
+  // console.log("try to connect =>", guid);
 
   const user = await prisma.user.findUnique({
     where: {
       guid,
     },
+    // include: {
+    //   reboot: true,
+    // },
   });
 
-  console.log("user", user);
+  // console.log("user", user);
 
   if (!user) return;
-  socket.join(guid);
-  socket.data.guid = guid;
+
+  // if (user.reboot.length > 0) {
+  //   prisma.reboot.deleteMany({
+  //     where: {
+  //       userGuid: guid,
+  //     },
+  //   });
+  //   return "reboot";
+  // }
 
   if (user.isBlocked) {
-    socket.emit("expired");
-    return;
+    return "expired";
   }
 
   if (user.expirationDate < new Date()) {
-    socket.emit("expired");
-    return;
+    return "expired";
   }
 
-  await prisma.user.updateMany({
+  // await prisma.user.updateMany({
+  //   where: {
+  //     guid,
+  //   },
+  //   data: {
+  //     lastLogin: new Date(),
+  //   },
+  // });
+
+  await prisma.userApp.deleteMany({
     where: {
-      guid,
-    },
-    data: {
-      isLogged: true,
+      userGuid: guid,
     },
   });
 
   if (
     dayjs(new Date()).add(DAYS_TO_WARNING, "day").isAfter(user.expirationDate)
   ) {
-    socket.emit("warning", dayjs(user.expirationDate).diff(new Date(), "day"));
-    return;
+    return "warning";
   }
+
+  return "ok";
 };

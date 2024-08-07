@@ -14,11 +14,18 @@ model user {
   guid           String    @id @default(uuid())
   name           String    @unique
   password       String
-  isLogged       Boolean?  @default(false)
+  // lastLogin      DateTime?
   isBlocked      Boolean?  @default(false)
   expirationDate DateTime  @default(now())
   userApp        userApp[]
+  // reboot         reboot[]
 }
+
+// model reboot {
+//   guid           String    @id @default(uuid())
+//   userGuid       String
+//   user           user      @relation(fields: [userGuid], references: [guid], onDelete: Cascade)
+// }
 
 model userApp {
   guid     String   @id @default(uuid())
