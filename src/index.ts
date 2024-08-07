@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 LoginRoute(app);
 RegisterRoute(app);
-// UsersRoute(io, app);
+UsersRoute(app);
 ExpireRoute(app);
 // RebootRoute(io, app);
 

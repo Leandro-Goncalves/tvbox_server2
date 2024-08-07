@@ -1,8 +1,7 @@
 import type { Express } from "express";
 import { prisma } from "..";
-import { Io } from "../socket";
 
-const UsersRoute = (io: Io, app: Express) => {
+const UsersRoute = (app: Express) => {
   app.get("/users", async (req, res) => {
     const users = await prisma.user.findMany({
       select: {
@@ -53,9 +52,9 @@ const UsersRoute = (io: Io, app: Express) => {
         isBlocked,
       },
     });
-    if (isBlocked) {
-      io.to(guid).emit("reboot");
-    }
+    // if (isBlocked) {
+    //   io.to(guid).emit("reboot");
+    // }
     res.send("ok");
   });
 };
