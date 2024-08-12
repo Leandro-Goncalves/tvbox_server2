@@ -26,6 +26,8 @@ const UsersRoute = (app: Express) => {
     const guid = req.params.guid;
     const { name } = req.body;
 
+    console.log("post app", guid, name);
+
     if (!name) {
       await prisma.userApp.deleteMany({
         where: {
