@@ -22,7 +22,7 @@ const UsersRoute = (app: Express) => {
     res.json(users.map((user) => ({ ...user, userApp: user.userApp[0] })));
   });
 
-  app.post("/user:guid/app", async (req, res) => {
+  app.post("/:guid/app", async (req, res) => {
     const guid = req.params.guid;
     const { name } = req.body;
 
