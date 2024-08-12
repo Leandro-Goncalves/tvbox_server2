@@ -29,7 +29,7 @@ const UsersRoute = (app: Express) => {
     );
   });
 
-  app.delete("/user/:guid/reboot", async (req, res) => {
+  app.post("/user/:guid/reboot", async (req, res) => {
     const guid = req.params.guid;
 
     await prisma.user.update({

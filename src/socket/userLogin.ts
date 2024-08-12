@@ -14,7 +14,7 @@ export const UserLogin = async (guid: string) => {
   if (!user) return;
 
   if (user.shouldRestart) {
-    prisma.user.update({
+    await prisma.user.update({
       where: {
         guid,
       },
