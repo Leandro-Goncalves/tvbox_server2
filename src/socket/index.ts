@@ -22,7 +22,6 @@ export const startSocket = (io: Io) => {
     console.log("a user connected");
 
     socket.on("user", async (guid) => {
-      // await UserLogin(socket, guid);
       socket.on("removeApp", async function () {
         console.log("user remove app");
         await prisma.userApp.deleteMany({

@@ -7,7 +7,6 @@ import LoginRoute from "./routes/login";
 import RegisterRoute from "./routes/register";
 import UsersRoute from "./routes/users";
 import ExpireRoute from "./routes/expire";
-import RebootRoute from "./routes/reboot";
 import { UserLogin } from "./socket/userLogin";
 
 const PORT = 3023;
@@ -23,7 +22,6 @@ LoginRoute(app);
 RegisterRoute(app);
 UsersRoute(app);
 ExpireRoute(app);
-// RebootRoute(io, app);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

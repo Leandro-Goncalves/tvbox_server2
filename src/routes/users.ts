@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { prisma } from "..";
+import dayjs from "dayjs";
 
 const UsersRoute = (app: Express) => {
   app.get("/users", async (req, res) => {
@@ -7,9 +8,9 @@ const UsersRoute = (app: Express) => {
       select: {
         guid: true,
         name: true,
-        isLogged: true,
         isBlocked: true,
         expirationDate: true,
+        lastLogin: true,
         userApp: {
           select: {
             guid: true,
@@ -19,14 +20,33 @@ const UsersRoute = (app: Express) => {
         },
       },
     });
-    res.json(users.map((user) => ({ ...user, userApp: user.userApp[0] })));
+    res.json(
+      users.map((user) => ({
+        ...user,
+        userApp: user.userApp[0],
+        isLogged: dayjs(user.lastLogin).isAfter(dayjs().subtract(3, "second")),
+      }))
+    );
   });
 
-  app.post("/:guid/app", async (req, res) => {
+  app.delete("/user/:guid/reboot", async (req, res) => {
+    const guid = req.params.guid;
+
+    await prisma.user.update({
+      where: {
+        guid,
+      },
+      data: {
+        shouldRestart: true,
+      },
+    });
+
+    return res.json({});
+  });
+
+  app.post("/user/:guid/app", async (req, res) => {
     const guid = req.params.guid;
     const { name } = req.body;
-
-    console.log("post app", guid, name);
 
     if (!name) {
       await prisma.userApp.deleteMany({
@@ -38,7 +58,7 @@ const UsersRoute = (app: Express) => {
       return;
     }
 
-    await prisma.userApp.upsert({
+    const v = await prisma.userApp.upsert({
       where: {
         userGuid: guid,
       },
@@ -53,7 +73,7 @@ const UsersRoute = (app: Express) => {
         userGuid: guid,
       },
     });
-    res.json({});
+    return res.json(v);
   });
 
   app.delete("/user/:guid", async (req, res) => {
@@ -86,9 +106,6 @@ const UsersRoute = (app: Express) => {
         isBlocked,
       },
     });
-    // if (isBlocked) {
-    //   io.to(guid).emit("reboot");
-    // }
     res.send("ok");
   });
 };
