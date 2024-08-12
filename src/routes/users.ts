@@ -33,6 +33,7 @@ const UsersRoute = (app: Express) => {
         },
       });
       res.json({});
+      return;
     }
 
     await prisma.userApp.upsert({
