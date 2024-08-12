@@ -42,12 +42,6 @@ export const UserLogin = async (guid: string) => {
     },
   });
 
-  await prisma.userApp.deleteMany({
-    where: {
-      userGuid: guid,
-    },
-  });
-
   if (
     dayjs(new Date()).add(DAYS_TO_WARNING, "day").isAfter(user.expirationDate)
   ) {
