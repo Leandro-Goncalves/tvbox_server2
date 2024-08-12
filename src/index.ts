@@ -30,9 +30,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/status", async (req, res) => {
-  console.log("guid", req.body.guid);
   const status = await UserLogin(req.body.guid);
-  console.log("status", status);
   return res.json({ status });
 });
 
