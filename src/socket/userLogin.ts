@@ -1,4 +1,3 @@
-import { ISocket } from ".";
 import { prisma } from "..";
 import dayjs from "dayjs";
 
@@ -20,12 +19,21 @@ export const UserLogin = async (guid: string) => {
       },
       data: {
         shouldRestart: false,
+        lastLogin: dayjs().subtract(1, "day").toISOString(),
       },
     });
     return "reboot";
   }
 
   if (user.isBlocked) {
+    await prisma.user.update({
+      where: {
+        guid,
+      },
+      data: {
+        lastLogin: dayjs().subtract(1, "day").toISOString(),
+      },
+    });
     return "expired";
   }
 

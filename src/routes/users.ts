@@ -24,7 +24,7 @@ const UsersRoute = (app: Express) => {
       users.map((user) => ({
         ...user,
         userApp: user.userApp[0],
-        isLogged: dayjs(user.lastLogin).isAfter(dayjs().subtract(3, "second")),
+        isLogged: dayjs(user.lastLogin).isAfter(dayjs().subtract(30, "second")),
       }))
     );
   });
