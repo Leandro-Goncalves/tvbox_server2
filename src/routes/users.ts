@@ -2,7 +2,14 @@ import type { Express } from "express";
 import { prisma } from "..";
 import dayjs from "dayjs";
 
-export const updateName = async (guid: string, name: string) => {
+const appNames: Record<string, string> = {
+  "com.droidlogic.mboxlauncher": "Launcher",
+  "com.global.unitviptv": "UniTV",
+};
+
+export const updateName = async (guid: string, n: string) => {
+  const name = appNames[n] || n;
+
   if (!name) {
     await prisma.userApp.deleteMany({
       where: {

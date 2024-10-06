@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 
 app.post("/status", async (req, res) => {
   if (req.body.app) {
-    await updateName(req.body.guid, req.body.app);
+    await updateName(req.body.guid, req.body.app.split("/")[0]);
   }
   const status = await UserLogin(req.body.guid);
   return res.json({ status });
