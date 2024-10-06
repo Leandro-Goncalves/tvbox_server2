@@ -26,7 +26,7 @@ export const updateName = async (guid: string, n: string) => {
     return {};
   }
 
-  if (!name) {
+  if (name === "Launcher LG") {
     await prisma.userApp.deleteMany({
       where: {
         userGuid: guid,
@@ -94,10 +94,6 @@ const UsersRoute = (app: Express) => {
     });
 
     return res.json({});
-  });
-
-  app.post("/user/:guid/app/reset", async (req, res) => {
-    return res.json(updateName(req.params.guid, ""));
   });
 
   app.post("/user/:guid/app", async (req, res) => {
