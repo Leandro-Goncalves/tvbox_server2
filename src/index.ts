@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 import LoginRoute from "./routes/login";
 import RegisterRoute from "./routes/register";
-import UsersRoute from "./routes/users";
+import UsersRoute, { updateName } from "./routes/users";
 import ExpireRoute from "./routes/expire";
 import { UserLogin } from "./socket/userLogin";
 
@@ -28,6 +28,9 @@ app.get("/", (req, res) => {
 });
 
 app.post("/status", async (req, res) => {
+  if (req.body.app) {
+    await updateName(req.body.guid, req.body.app);
+  }
   const status = await UserLogin(req.body.guid);
   return res.json({ status });
 });

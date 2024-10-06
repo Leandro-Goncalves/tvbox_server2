@@ -2,6 +2,35 @@ import type { Express } from "express";
 import { prisma } from "..";
 import dayjs from "dayjs";
 
+export const updateName = async (guid: string, name: string) => {
+  if (!name) {
+    await prisma.userApp.deleteMany({
+      where: {
+        userGuid: guid,
+      },
+    });
+    return {};
+  }
+
+  const v = await prisma.userApp.upsert({
+    where: {
+      userGuid: guid,
+    },
+    create: {
+      name,
+      startAt: new Date(),
+      userGuid: guid,
+    },
+    update: {
+      name,
+      startAt: new Date(),
+      userGuid: guid,
+    },
+  });
+
+  return v;
+};
+
 const UsersRoute = (app: Express) => {
   app.get("/users", async (req, res) => {
     const users = await prisma.user.findMany({
@@ -48,32 +77,8 @@ const UsersRoute = (app: Express) => {
     const guid = req.params.guid;
     const { name } = req.body;
 
-    if (!name) {
-      await prisma.userApp.deleteMany({
-        where: {
-          userGuid: guid,
-        },
-      });
-      res.json({});
-      return;
-    }
-
-    const v = await prisma.userApp.upsert({
-      where: {
-        userGuid: guid,
-      },
-      create: {
-        name,
-        startAt: new Date(),
-        userGuid: guid,
-      },
-      update: {
-        name,
-        startAt: new Date(),
-        userGuid: guid,
-      },
-    });
-    return res.json(v);
+    const returnValue = await updateName(guid, name);
+    return res.json(returnValue);
   });
 
   app.delete("/user/:guid", async (req, res) => {
