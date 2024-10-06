@@ -12,7 +12,6 @@ const appNames: Record<string, string> = {
 
 export const updateName = async (guid: string, n: string) => {
   const name = appNames[n] || n;
-  console.log("name", name);
 
   const appName = await prisma.userApp.findUnique({
     where: {
@@ -23,16 +22,16 @@ export const updateName = async (guid: string, n: string) => {
     },
   });
 
-  if (appName?.name === name) {
-    return {};
-  }
-
   if (name === "Launcher LG") {
     await prisma.userApp.deleteMany({
       where: {
         userGuid: guid,
       },
     });
+    return {};
+  }
+
+  if (appName?.name === name) {
     return {};
   }
 
