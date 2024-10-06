@@ -5,10 +5,24 @@ import dayjs from "dayjs";
 const appNames: Record<string, string> = {
   "com.droidlogic.mboxlauncher": "Launcher",
   "com.global.unitviptv": "UniTV",
+  "com.google.android.youtube.tv": "Youtube",
 };
 
 export const updateName = async (guid: string, n: string) => {
   const name = appNames[n] || n;
+
+  const appName = await prisma.userApp.findUnique({
+    where: {
+      userGuid: guid,
+    },
+    select: {
+      name: true,
+    },
+  });
+
+  if (appName?.name === name) {
+    return {};
+  }
 
   if (!name) {
     await prisma.userApp.deleteMany({
