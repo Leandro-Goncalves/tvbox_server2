@@ -96,11 +96,7 @@ const UsersRoute = (app: Express) => {
   });
 
   app.post("/user/:guid/app", async (req, res) => {
-    const guid = req.params.guid;
-    const { name } = req.body;
-
-    const returnValue = await updateName(guid, name);
-    return res.json(returnValue);
+    return res.json({});
   });
 
   app.delete("/user/:guid", async (req, res) => {
