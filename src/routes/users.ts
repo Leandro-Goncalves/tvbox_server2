@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 
 const appNames: Record<string, string> = {
   "com.droidlogic.mboxlauncher": "Launcher",
+  "com.leandro_goncalves.tvbox": "Launcher LG",
   "com.global.unitviptv": "UniTV",
   "com.google.android.youtube.tv": "Youtube",
 };
