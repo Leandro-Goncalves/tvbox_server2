@@ -12,6 +12,7 @@ const appNames: Record<string, string> = {
 
 export const updateName = async (guid: string, n: string) => {
   const name = appNames[n] || n;
+  console.log("name", name);
 
   const appName = await prisma.userApp.findUnique({
     where: {
