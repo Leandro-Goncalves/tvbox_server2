@@ -8,6 +8,7 @@ const appNames: Record<string, string> = {
   "com.global.unitviptv": "UniTV",
   "com.integration.unitvsiptv": "UniTV Free",
   "com.google.android.youtube.tv": "Youtube",
+  "com.mm.droid.livetv.tve": "TV Express",
 };
 
 export const updateName = async (guid: string, n: string) => {

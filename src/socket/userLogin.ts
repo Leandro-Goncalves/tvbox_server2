@@ -53,7 +53,7 @@ export const UserLogin = async (guid: string) => {
   if (
     dayjs(new Date()).add(DAYS_TO_WARNING, "day").isAfter(user.expirationDate)
   ) {
-    return "warning";
+    return `warning ${dayjs(user.expirationDate).diff(new Date(), "day")}`;
   }
 
   return "ok";
