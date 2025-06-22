@@ -40,7 +40,7 @@ const upload = multer({
   limits: { fileSize: 1024 * 1024 * 100 }, // 20 MB limit
 });
 
-const PORT = 3023;
+const PORT = 3355;
 
 export const prisma = new PrismaClient();
 const app = express();
