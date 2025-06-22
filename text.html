@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <input type="file" onchange="upload(this.files)" />
+    <button onclick="ping()">test</button>
+
+    <script
+      src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+      integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const socket = io("http://localhost:3023", {
+        transports: ["websocket"],
+      });
+
+      function ping() {
+        socket.emit("ping", () => {
+          console.log("pinged");
+        });
+      }
+
+      function upload(files) {
+        console.log("a", files[0]);
+        socket.emit("upload", files[0], "aaa");
+      }
+    </script>
+  </body>
+</html>

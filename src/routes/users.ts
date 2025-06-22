@@ -14,6 +14,17 @@ const appNames: Record<string, string> = {
   "com.newbraz.p2p": "P2Braz",
 };
 
+export const handleAction = async (guid: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      guid,
+    },
+  });
+  if (!user) {
+    return {};
+  }
+};
+
 export const updateName = async (guid: string, n: string) => {
   const name = appNames[n] || n;
 
@@ -58,6 +69,19 @@ export const updateName = async (guid: string, n: string) => {
   return v;
 };
 
+export const updateVersion = async (guid: string, appVersion: string) => {
+  const v = await prisma.user.update({
+    where: {
+      guid,
+    },
+    data: {
+      appVersion,
+    },
+  });
+
+  return v;
+};
+
 const UsersRoute = (app: Express) => {
   app.get("/users", async (req, res) => {
     const users = await prisma.user.findMany({
@@ -67,6 +91,7 @@ const UsersRoute = (app: Express) => {
         isBlocked: true,
         expirationDate: true,
         lastLogin: true,
+        appVersion: true,
         userApp: {
           select: {
             guid: true,
@@ -83,6 +108,34 @@ const UsersRoute = (app: Express) => {
         isLogged: dayjs(user.lastLogin).isAfter(dayjs().subtract(30, "second")),
       }))
     );
+  });
+
+  app.get("/user/:guid", async (req, res) => {
+    const users = await prisma.user.findUnique({
+      where: {
+        guid: req.params.guid,
+      },
+      select: {
+        guid: true,
+        name: true,
+        expirationDate: true,
+        lastLogin: true,
+        appVersion: true,
+        installOrders: {
+          include: {
+            apps: {
+              include: {
+                app: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (!users) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.json(users);
   });
 
   app.post("/user/:guid/reboot", async (req, res) => {

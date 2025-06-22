@@ -10,15 +10,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum INSTALL_STATE {
+  pending
+  downloading
+  installing
+  completed
+  failed
+
+  @@map("installState")
+}
+
+model installOrder {
+  guid     String         @id @default(uuid())
+  apps     appToInstall[]
+  user     user           @relation(fields: [userGuid], references: [guid])
+  userGuid String
+}
+
+model appToInstall {
+  guid             String        @id @default(uuid())
+  progress         Int           @default(0)
+  state            INSTALL_STATE @default(pending)
+  app              apps          @relation(fields: [appGuid], references: [guid])
+  appGuid          String
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  installOrder     installOrder? @relation(fields: [installOrderGuid], references: [guid])
+  installOrderGuid String?
+}
+
 model user {
-  guid           String    @id @default(uuid())
-  name           String    @unique
+  guid           String         @id @default(uuid())
+  name           String         @unique
   password       String
-  isBlocked      Boolean?  @default(false)
-  expirationDate DateTime  @default(now())
+  appVersion     String         @default("0.0.0")
+  installOrders  installOrder[]
+  isBlocked      Boolean?       @default(false)
+  expirationDate DateTime       @default(now())
   userApp        userApp[]
   lastLogin      DateTime?
-  shouldRestart   Boolean?  @default(false)  
+  shouldRestart  Boolean?       @default(false)
+}
+
+model apps {
+  guid         String         @id @default(uuid())
+  name         String
+  url          String
+  appToInstall appToInstall[]
 }
 
 model userApp {
