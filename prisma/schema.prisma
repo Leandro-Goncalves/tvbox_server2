@@ -23,7 +23,7 @@ enum INSTALL_STATE {
 model installOrder {
   guid     String         @id @default(uuid())
   apps     appToInstall[]
-  user     user           @relation(fields: [userGuid], references: [guid])
+  user     user           @relation(fields: [userGuid], references: [guid], onDelete: Cascade)
   userGuid String
 }
 
