@@ -7,7 +7,6 @@ import RegisterRoute from "./routes/register";
 import UsersRoute, { updateName, updateVersion } from "./routes/users";
 import ExpireRoute from "./routes/expire";
 import { UserLogin } from "./socket/userLogin";
-import { uploadFile } from "./utils/uploadFile";
 import multer from "multer";
 import multerS3 from "multer-s3";
 import { S3Client } from "@aws-sdk/client-s3";

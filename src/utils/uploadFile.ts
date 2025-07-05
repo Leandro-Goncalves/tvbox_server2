@@ -32,6 +32,7 @@ export const uploadFile = async (file: Express.Multer.File, name: string) => {
     data: {
       name,
       url: `${process.env.S3_URL}/${process.env.S3_BUCKET}/${Key}`,
+      key: Key,
     },
   });
 
