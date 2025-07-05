@@ -31,7 +31,7 @@ model appToInstall {
   guid             String        @id @default(uuid())
   progress         Int           @default(0)
   state            INSTALL_STATE @default(pending)
-  app              apps          @relation(fields: [appGuid], references: [guid])
+  app              apps          @relation(fields: [appGuid], references: [guid], onDelete: Cascade)
   appGuid          String
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
@@ -56,6 +56,7 @@ model apps {
   guid         String         @id @default(uuid())
   name         String
   url          String
+  key          String         @unique
   appToInstall appToInstall[]
 }
 

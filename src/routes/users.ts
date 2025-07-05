@@ -12,6 +12,7 @@ const appNames: Record<string, string> = {
   "com.mm.droid.livetv": "Mibo IA",
   "com.tv.visioncine": "Vision Cine",
   "com.newbraz.p2p": "P2Braz",
+  "com.studio.newhybrid": "New Hybrid",
 };
 
 export const handleAction = async (guid: string) => {

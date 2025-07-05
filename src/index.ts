@@ -17,7 +17,7 @@ import { Server } from "socket.io";
 import ss from "socket.io-stream";
 import AppsRoute from "./routes/apps";
 
-const s3 = new S3Client({
+export const s3 = new S3Client({
   region: process.env.S3_REGION ?? "",
   endpoint: process.env.S3_URL ?? "",
   credentials: {
@@ -93,13 +93,10 @@ app.post("/uploadApk", upload.single("apk") as any, async (req, res) => {
       url: `${process.env.S3_URL}/${process.env.S3_BUCKET}/${
         (req.file as any).key
       }`,
+      key: (req.file as any).key,
     },
   });
   return res.json(data);
-});
-
-app.get("/apps", async (req, res) => {
-  return prisma.apps.findMany().then((apps) => res.json(apps));
 });
 
 app.post("/status", async (req, res) => {
