@@ -13,6 +13,8 @@ const appNames: Record<string, string> = {
   "com.tv.visioncine": "Vision Cine",
   "com.newbraz.p2p": "P2Braz",
   "com.studio.newhybrid": "New Hybrid",
+  "com.jhalim.aztv": "AZbox",
+  "com.valor.mfc.droid.tvapp.generic": "Appi Cinema",
 };
 
 export const handleAction = async (guid: string) => {
